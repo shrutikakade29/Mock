@@ -1,0 +1,64 @@
+% FAMILY RELATIONSHIPS – PREDICATE LOGIC IN PROLOG
+
+
+% Facts
+male(rahul).
+male(amit).
+male(sameer).
+male(raj).
+
+female(sneha).
+female(riya).
+female(anita).
+
+parent(rahul, amit).
+parent(rahul, riya).
+parent(sneha, amit).
+parent(sneha, riya).
+
+parent(amit, sameer).
+parent(riya, anita).
+parent(riya, raj).
+
+
+% RULES (Predicate Logic)
+
+
+% X is father of Y if X is male and X is parent of Y
+father(X, Y) :-
+    male(X),
+    parent(X, Y).
+
+% X is mother of Y if X is female and X is parent of Y
+mother(X, Y) :-
+    female(X),
+    parent(X, Y).
+
+% X is sibling of Y if they share at least one parent
+sibling(X, Y) :-
+    parent(P, X),
+    parent(P, Y),
+    X \= Y.
+
+% X is brother of Y
+brother(X, Y) :-
+    male(X),
+    sibling(X, Y).
+
+% X is sister of Y
+sister(X, Y) :-
+    female(X),
+    sibling(X, Y).
+
+% X is grandparent of Y
+grandparent(X, Y) :-
+    parent(X, Z),
+    parent(Z, Y).
+
+% X is ancestor of Y
+ancestor(X, Y) :-
+    parent(X, Y).
+
+ancestor(X, Y) :-
+    parent(X, Z),
+    ancestor(Z, Y).

@@ -1,0 +1,94 @@
+% ANIMAL IDENTIFICATION EXPERT SYSTEM
+
+
+:- dynamic yes/1, no/1.
+
+start :-
+    write('--- Animal Identification Expert System ---'), nl,
+    write('Answer yes. or no. to each question.'), nl, nl,
+    identify_animal,
+    undo.
+
+% MAIN IDENTIFICATION RULES
+
+
+identify_animal :-
+    animal(LikelyAnimal),
+    write('The animal is probably: '), write(LikelyAnimal), nl, !.
+
+identify_animal :-
+    write('Sorry, I cannot identify the animal based on the given traits.'), nl.
+
+
+% KNOWLEDGE BASE – RULES FOR ANIMALS
+
+animal(tiger) :-
+    trait(carnivore),
+    trait(has_stripes),
+    trait(big_cat).
+
+animal(lion) :-
+    trait(carnivore),
+    trait(has_mane),
+    trait(big_cat).
+
+animal(zebra) :-
+    trait(has_stripes),
+    trait(herbivore).
+
+animal(elephant) :-
+    trait(has_trunk),
+    trait(large_body).
+
+animal(giraffe) :-
+    trait(long_neck),
+    trait(herbivore).
+
+animal(dog) :-
+    trait(domestic),
+    trait(barks).
+
+animal(cat) :-
+    trait(domestic),
+    trait(meows).
+
+animal(cow) :-
+    trait(domestic),
+    trait(herbivore),
+    trait(has_horns).
+
+animal(goat) :-
+    trait(herbivore),
+    trait(has_horns),
+    trait(domestic).
+
+animal(horse) :-
+    trait(herbivore),
+    trait(domestic),
+    trait(can_run_fast).
+
+
+% ASKING QUESTIONS
+
+
+trait(T) :-
+    (yes(T) -> true ;
+     no(T)  -> fail ;
+     ask(T)).
+
+ask(Question) :-
+    write('Does the animal have the trait: '), write(Question), write('? '),
+    read(Response),
+    nl,
+    (Response == yes ->
+        assert(yes(Question))
+    ;
+        assert(no(Question)), fail).
+
+
+% RESET DYNAMIC MEMORY
+
+
+undo :- retract(yes(_)), fail.
+undo :- retract(no(_)), fail.
+un
